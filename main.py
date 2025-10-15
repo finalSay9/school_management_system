@@ -1,11 +1,15 @@
 from fastapi import FastAPI
-import users
-import authentication
+from users import router as users_router
+from authentication import router as auth_router
+from roles.hr import router as hr_router
 
+app = FastAPI(title="School Management System")
 
-app = FastAPI(
-    title='school management system'
-)
+# Include routers
+app.include_router(auth_router)
+app.include_router(users_router)
+app.include_router(hr_router)
 
-app.include_router(users.router)
-app.include_router(authentication.router)
+@app.get("/")
+def read_root():
+    return {"message": "School Management System API"}
