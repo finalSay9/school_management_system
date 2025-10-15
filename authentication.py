@@ -25,8 +25,6 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')
 
 
 
-
-
 async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db)
@@ -58,21 +56,21 @@ def register(user: CreateUser, db: Session = Depends(get_db)):
 @router.post("/login", response_model=Token)
 def login(login_data: LoginRequest, db: Session = Depends(get_db)):
     """Login user and return tokens"""
-    # Check if login is email or username
-    if "@" in login_data.username_or_email:
-        user =  users.get_user_by_email(db, login_data.username_or_email)
-    else:
-        user = users.get_user_by_username( login_data.username_or_email, db)
+    # Query user by email (assuming username_or_email is email)
+    user = db.query(User).filter(User.email == login_data.username_or_email).first()
     
-    if not user or not verify_password(login_data.password, user.password_hash):
+    # Check if user exists and password is correct
+    if not user or not verify_password(login_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username/email or password"
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"},
         )
     
+    # Check if user is active
     if not user.is_active:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_403_FORBIDDEN,
             detail="Account is deactivated"
         )
     

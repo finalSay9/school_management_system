@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status, Depends, APIRouter
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from database import get_db
 import schemas
 import models
@@ -79,3 +79,23 @@ def getUser(
             detail=f"User with id {user_id} not found"
         )
     return user
+
+
+
+
+
+@router.get("/email/{email}", response_model=Optional[schemas.UserResponse])
+async def get_user_by_email(email: str, db: Session = Depends(get_db)):
+    """Get user by email"""
+    user = db.query(models.User).filter(models.User.email == email, models.User.is_active == True).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    return user
+
+
+
+    
+
