@@ -78,7 +78,7 @@ def verify_token(token: str, token_type: str = "access"):
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate credentials"
             )
-        return uuid.UUID(user_id)
+        return int(user_id)
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
