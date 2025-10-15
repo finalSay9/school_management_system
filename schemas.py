@@ -134,3 +134,53 @@ class LoginRequest(BaseModel):
     password: str
 
 
+
+class DepartmentInfo(BaseModel):
+    """Department information with head of department."""
+    department: str
+    head_of_department: Optional[str] = None  # Full name of HOD
+    head_of_department_id: Optional[int] = None
+    total_teachers: int
+    total_students: int
+
+class PerformanceTrend(BaseModel):
+    """Performance trend data."""
+    period: str  # e.g., "2024-Q1", "Jan 2024"
+    average_score: float
+    total_students: int
+    pass_rate: float  # Percentage
+
+class DashboardStats(BaseModel):
+    """Main dashboard statistics."""
+    total_students: int
+    total_teachers: int
+    total_departments: int
+    total_parents: int
+    active_users: int
+    inactive_users: int
+
+class HeadteacherDashboard(BaseModel):
+    """Complete headteacher dashboard data."""
+    stats: DashboardStats
+    departments: List[DepartmentInfo]
+    performance_trends: List[PerformanceTrend]
+    recent_registrations: int  # Students registered in last 30 days
+    teacher_student_ratio: str  # e.g., "1:25"
+
+class TeacherStats(BaseModel):
+    """Individual teacher statistics."""
+    teacher_id: int
+    teacher_name: str
+    department: Optional[str]
+    total_classes: int
+    total_students: int
+    average_performance: Optional[float] = None
+
+class StudentStats(BaseModel):
+    """Individual student statistics."""
+    student_id: int
+    student_name: str
+    grade_level: Optional[int]
+    total_subjects: int
+    average_score: Optional[float] = None
+    attendance_rate: Optional[float] = None
