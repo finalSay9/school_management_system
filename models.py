@@ -1,21 +1,11 @@
 import re
 from typing import Optional, List
 from pydantic import BaseModel, EmailStr, ConfigDict, field_validator
-from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, Enum as SQLEnum
+from sqlalchemy import Column, DateTime, Float, Integer, String, Date, Boolean, ForeignKey, Enum as SQLEnum, Text
 from sqlalchemy.orm import relationship
 from database import Base
 from enum import Enum as PyEnum
 from datetime import datetime, date
-
-
-
-"""
-Database Models for School Management System
-"""
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date, ForeignKey, Float, Text, Enum as SQLEnum
-from sqlalchemy.orm import relationship
-from datetime import datetime
-from database import Base
 import enum
 
 

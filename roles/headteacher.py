@@ -29,6 +29,9 @@ def require_headteacher_role(current_user: models.User = Depends(get_current_use
     return current_user
 
 
+
+
+
 @router.get("/dashboard", response_model=schemas.HeadteacherDashboard)
 def get_dashboard(
     db: Session = Depends(get_db),
